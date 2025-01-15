@@ -1,6 +1,6 @@
 00001000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.16.01
-Created On: 13/01/2025 16:16:36
+Created On: 15/01/2025 15:57:42
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :Part 4
@@ -12,21 +12,25 @@ Created On: 13/01/2025 16:16:36
 00001000                             8  START:                  ; first instruction of program
 00001000                             9  
 00001000                            10  * Put program code here
-00001000  43F9 0000101C             11      LEA text, A1
-00001006  303C 0004                 12      MOVE #4, D0
-0000100A  4E4F                      13      TRAP #15
-0000100C  303C 000E                 14      MOVE #14, D0
-00001010  4E4F                      15      TRAP #15
-00001012  303C 0003                 16      MOVE #3, D0
-00001016  4E4F                      17      TRAP #15
-00001018                            18      
-00001018  FFFF FFFF                 19      SIMHALT             ; halt simulator
-0000101C                            20  
-0000101C                            21  * Put variables and constants here
-0000101C                            22  
-0000101C= 44 61 74 61 20 52 ...     23  text dc.b 'Data Register: ',0
-0000102C                            24  
-0000102C                            25      END    START        ; last line of source
+00001000  43F9 0000101C             11      LEA text, A1        ; Load the memory location of "text" and store it in register A1
+00001006  303C 0004                 12      MOVE #4, D0         ; Copy the literal value 4 into register D4
+0000100A  4E4F                      13      TRAP #15            ; Call TRAP #15 which is used for I/O, the task number is stored in register D0
+0000100C                            14                          ; Task no is 4, which reads a single number from the keyboard and stores in register D1.L
+0000100C  303C 000E                 15      MOVE #14, D0        ; Move the literal value 14 into D0
+00001010  4E4F                      16      TRAP #15            ; Task 14 is called, displays the NULL terminated String at A1 without CR,LF
+00001012  303C 0003                 17      MOVE #3, D0         ; Move the literal value 3 into D0
+00001016  4E4F                      18      TRAP #15            ; Task 3 is called, which displays signed number in D1.L in decimal
+00001018                            19      
+00001018  FFFF FFFF                 20      SIMHALT             ; halt simulator
+0000101C                            21  
+0000101C                            22  * Put variables and constants here
+0000101C                            23  
+0000101C= 44 61 74 61 20 52 ...     24  text dc.b 'Data Register: ',0   ;dc.b means "Define constant byte"
+0000102C                            25                                  ;this stores the String 'Data Register: ' with the label "text"
+0000102C                            26                                  ;0 represents a NULL terminator (0 in ascii is null) used to mark the end of the String
+0000102C                            27  
+0000102C                            28  
+0000102C                            29      END    START        ; last line of source
 
 No errors detected
 No warnings generated

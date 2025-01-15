@@ -1,6 +1,6 @@
 00001000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.16.01
-Created On: 13/01/2025 15:53:36
+Created On: 15/01/2025 15:34:29
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :Part 2
@@ -13,11 +13,11 @@ Created On: 13/01/2025 15:53:36
 00001000                             9  
 00001000                            10  
 00001000                            11  * Put program code here
-00001000  720F                      12      MOVE.L #%00001111,D1
-00001002  1401                      13      MOVE.B D1,D2
-00001004  11C1 2000                 14      MOVE.B D1,$2000
-00001008  1438 2000                 15      MOVE.B $2000,D2
-0000100C  11F8 2000 3000            16      MOVE.B $2000,$3000
+00001000  720F                      12      MOVE.L #%00001111,D1    ; Move the literal (#) binary (%) number 00001111 into register D1
+00001002  1401                      13      MOVE.B D1,D2            ; Copy the contents of register D1 into register D2
+00001004  11C1 2000                 14      MOVE.B D1,$2000         ; Copy the contents of register D1 into memory location 2000 in hex ($)
+00001008  1438 2000                 15      MOVE.B $2000,D2         ; Copy the contents of memory location 2000 in hex into register D2
+0000100C  11F8 2000 3000            16      MOVE.B $2000,$3000      ; Copy the contents of memory location 2000 in hex into memory location 3000 in hex
 00001012                            17      
 00001012  FFFF FFFF                 18      SIMHALT             ; halt simulator
 00001016                            19  
