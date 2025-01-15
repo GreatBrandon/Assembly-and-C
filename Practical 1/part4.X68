@@ -21,7 +21,10 @@ START:                  ; first instruction of program
 
 * Put variables and constants here
 
-text dc.b 'Data Register: ',0
+text dc.b 'Data Register: ',0   ;dc.b means "Define constant byte"
+                                ;this stores the String 'Data Register: ' with the label "text"
+                                ;0 represents a NULL terminator (0 in ascii is null) used to mark the end of the String
+
 
     END    START        ; last line of source
 
