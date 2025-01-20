@@ -1,0 +1,58 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 20/01/2025 15:55:08
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 4
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :20/1/25
+00000000                             5  * Description:Practical 2 part 4
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11      ; Copy the binary, hex and literal numbers 10101010 into registers D0, D1, D2
+00001000  203C 000000AA             12      MOVE.L #%10101010, D0
+00001006  223C 10101010             13      MOVE.L #$10101010, D1
+0000100C  243C 009A2112             14      MOVE.L #10101010, D2
+00001012                            15      
+00001012                            16      ; Copy the word contents of registers D0, D1, D2 into hex memory locations 2000,2010,2020
+00001012  31C0 2000                 17      MOVE.W D0, $2000
+00001016  31C1 2010                 18      MOVE.W D1, $2010
+0000101A  31C2 2020                 19      MOVE.W D2, $2020
+0000101E                            20      
+0000101E                            21      ; Copy the byte contents of hex memory locations 2000,2010,2020 into registers D3,D4,D5
+0000101E  1638 2000                 22      MOVE.B $2000, D3
+00001022  1838 2010                 23      MOVE.B $2010, D4
+00001026  1A38 2020                 24      MOVE.B $2020, D5
+0000102A                            25      
+0000102A                            26      ; Copy the binary, hex and literal numbers into regsiters A1, A2, A3
+0000102A  227C ABCDEF10             27      MOVE.L #$ABCDEF10, A1
+00001030  247C 00000009             28      MOVE.L #%1001, A2
+00001036  267C 000003E9             29      MOVE.L #1001, A3
+0000103C                            30      
+0000103C                            31      ; Copy the contents of registers A1, A2, A3 into hex memory locations 2030,2040,2050
+0000103C  21C9 2030                 32      MOVE.L A1, $2030
+00001040  21CA 2040                 33      MOVE.L A2, $2040
+00001044  21CB 2050                 34      MOVE.L A3, $2050
+00001048                            35      
+00001048                            36      ; Copy the word size hex, binary and literal numbers into memory locations 2030,2040,2050
+00001048  31FC DDDD 2030            37      MOVE.W #$DDDD, $2030
+0000104E  31FC 0009 2040            38      MOVE.W #%1001, $2040
+00001054  31FC 03E9 2050            39      MOVE.W #1001, $2050
+0000105A                            40  
+0000105A  FFFF FFFF                 41      SIMHALT             ; halt simulator
+0000105E                            42  
+0000105E                            43  * Put variables and constants here
+0000105E                            44  
+0000105E                            45      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+START               1000

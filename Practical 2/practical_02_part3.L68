@@ -1,0 +1,48 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 20/01/2025 15:36:09
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 3
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :20/1/25
+00000000                             5  * Description:Practical 2 part 3
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  
+00001000                            12                          ; MOVE.L copies 32 bits/4 bytes
+00001000  7004                      13      MOVE.L #%100, D0    ; Copy the binary literal 100 into register D0
+00001002  223C 00000100             14      MOVE.L #$100, D1    ; Copy the hex literal 100 into register D1
+00001008  7464                      15      MOVE.L #100, D2     ; Copy the literal 100 into register D2
+0000100A                            16      
+0000100A  21C0 3000                 17      MOVE.L D0, $3000    ; Copy register D0 into hex memory location 3000
+0000100E  21C1 3010                 18      MOVE.L D1, $3010    ; Copy register D1 into hex memory location 3010
+00001012  21C2 3020                 19      MOVE.L D2, $3020    ; Copy register D2 into hex memory location 3020
+00001016                            20      
+00001016                            21                          ; MOVE.W copies 16 bits/2 bytes
+00001016  31FC 0064 3020            22      MOVE.W #100, $3020  ; Copy the literal 100 into hex memory location 3020
+0000101C  31FC 0100 3010            23      MOVE.W #$100, $3010 ; Copy the hex literal 100 into hex memory location 3010
+00001022  31FC 0004 3000            24      MOVE.W #%100, $3000 ; Copy the binary literal 100 into hex memory location 3000
+00001028                            25  
+00001028                            26                          ; MOVE.B copies 8 bits/1 byte
+00001028  11FC 0064 3020            27      MOVE.B #100, $3020  ; Copy the literal 100 into hex memory location 3020
+0000102E  11FC 0064 3010            28      MOVE.B #$64, $3010  ; Copy the hex literal 64 into hex memory location 3010
+00001034  11FC 008F 3000            29      MOVE.B #%10001111, $3000    ; Copy the binary literal 10001111 into hex memory location 3000
+0000103A                            30  
+0000103A  FFFF FFFF                 31      SIMHALT             ; halt simulator
+0000103E                            32  
+0000103E                            33  * Put variables and constants here
+0000103E                            34  
+0000103E                            35      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+START               1000

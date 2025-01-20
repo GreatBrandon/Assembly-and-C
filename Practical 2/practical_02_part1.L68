@@ -1,0 +1,37 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 20/01/2025 15:21:02
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 2
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :20/1/25
+00000000                             5  * Description:Practical 2 part 2
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  
+00001000  7004                      12      MOVE.L #%100, D0    ; Copy the binary literal 100 into register D0
+00001002  223C 00000100             13      MOVE.L #$100, D1    ; Copy the hex literal 100 into register D1
+00001008  7464                      14      MOVE.L #100, D2     ; Copy the literal 100 into register D2
+0000100A                            15      
+0000100A  21C0 3000                 16      MOVE.L D0, $3000    ; Copy register D0 into hex memory location 3000
+0000100E  21C1 3010                 17      MOVE.L D1, $3010    ; Copy register D1 into hex memory location 3010
+00001012  21C2 3020                 18      MOVE.L D2, $3020    ; Copy register D2 into hex memory location 3020
+00001016                            19      
+00001016  FFFF FFFF                 20      SIMHALT             ; halt simulator
+0000101A                            21  
+0000101A                            22  * Put variables and constants here
+0000101A                            23  
+0000101A                            24      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+START               1000
