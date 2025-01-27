@@ -1,0 +1,34 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 27/01/2025 16:09:30
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 3
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :27/1/2025
+00000000                             5  * Description:Practical 3 part 3
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  
+00001000  47F9 0000100E             12      LEA HEALTH, A3      ; Load the memory location of the variable HEALTH and store it in register A3
+00001006  0413 000A                 13      SUB.B #10, (A3)     ; Subtract byte literal 10 from the memory location stored in register A3
+0000100A                            14  
+0000100A  FFFF FFFF                 15      SIMHALT             ; halt simulator
+0000100E                            16  
+0000100E                            17  * Put variables and constants here
+0000100E                            18  
+0000100E= 64                        19  HEALTH dc.b $64 
+0000100F                            20      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+HEALTH              100E
+START               1000

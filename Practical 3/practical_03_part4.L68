@@ -1,0 +1,71 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 27/01/2025 16:32:39
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 4
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :27/1/2025
+00000000                             5  * Description:Practical 3 part 4
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  
+00001000                            12      ; Load the memory addresses of the variables below into registers A1-7
+00001000  43F9 00001052             13      LEA POINTS, A1
+00001006  45F9 00001056             14      LEA HEALTH, A2
+0000100C  47F9 00001057             15      LEA PLAYERX, A3
+00001012  49F9 00001058             16      LEA PLAYERY, A4
+00001018  4BF9 0000105A             17      LEA BOSSHEALTH, A5
+0000101E  4DF9 0000105C             18      LEA BOSSX, A6
+00001024  4FF9 0000105E             19      LEA BOSSY, A7
+0000102A                            20      
+0000102A                            21      ; Adjust/add player X and Y coordinates stored in the memory locations stored in registers A3, A4
+0000102A  0613 0064                 22      ADD.B #100, (A3)
+0000102E  0614 0064                 23      ADD.B #100, (A4)
+00001032                            24      
+00001032                            25      ; Adjust/subtract boss X and Y coordinates stored in the memory locations stored in registers A6. A7
+00001032  0456 0064                 26      SUB.W #100, (A6)
+00001036  0457 0064                 27      SUB.W #100, (A7)
+0000103A                            28      
+0000103A                            29      ; Subtract boss and player health stored in the memory locations stored in registers A5 and A2
+0000103A  0455 01F4                 30      SUB.W #500, (A5)
+0000103E  0412 0046                 31      SUB.B #70, (A2)
+00001042  0455 01F4                 32      SUB.W #500, (A5)
+00001046                            33      
+00001046                            34      ; Increase player points stored in the memory location stored in register A1
+00001046  0691 000003E8             35      ADD.L #1000, (A1)
+0000104C                            36      ; Copy the value stored in the memory location stored in register A1 into register D1
+0000104C  2211                      37      MOVE.L (A1), D1
+0000104E                            38  
+0000104E  FFFF FFFF                 39      SIMHALT             ; halt simulator
+00001052                            40  
+00001052                            41  * Put variables and constants here
+00001052                            42  
+00001052= 00000000                  43  POINTS dc.l $0 
+00001056= 64                        44  HEALTH dc.b $64
+00001057= 64                        45  PLAYERX dc.b 100
+00001058= 64                        46  PLAYERY dc.b 100
+0000105A= 03E8                      47  BOSSHEALTH dc.w 1000
+0000105C= 012C                      48  BOSSX dc.w 300
+0000105E= 012C                      49  BOSSY dc.w 300
+00001060                            50  
+00001060                            51      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BOSSHEALTH          105A
+BOSSX               105C
+BOSSY               105E
+HEALTH              1056
+PLAYERX             1057
+PLAYERY             1058
+POINTS              1052
+START               1000

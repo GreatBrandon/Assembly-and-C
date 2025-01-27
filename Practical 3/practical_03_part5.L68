@@ -1,0 +1,50 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 27/01/2025 16:41:14
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 5
+00000000                             3  * Written by :Brandon Jaroszczak
+00000000                             4  * Date       :27/1/2025
+00000000                             5  * Description:Practical 3 part 5
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  
+00001000  227C 00001020             12      MOVEA.L #ACHIEVEMENT_POINTS, A1 ; Move the address of this variable into register A1 (same as LEA)
+00001006  7000                      13      MOVE.L #0, D0       ; Move the long literal 0 into register D0
+00001008                            14      
+00001008  2419                      15      MOVE.L (A1)+, D2    ; Copy the value stored in the memory location stored in register A1 into register D2, then increment the value stored in A1 by a long (32 bits/4 bytes)
+0000100A  D082                      16      ADD.L D2, D0        ; Add the value stored in the registers D2 and D0 and store the result in register D0
+0000100C                            17      ; Repeat the above code 4 more times, each time pointing to the next location in the array and adding the value at that location into register D0
+0000100C  2419                      18      MOVE.L (A1)+, D2
+0000100E  D082                      19      ADD.L D2, D0
+00001010                            20          
+00001010  2419                      21      MOVE.L (A1)+, D2
+00001012  D082                      22      ADD.L D2, D0
+00001014                            23          
+00001014  2419                      24      MOVE.L (A1)+, D2
+00001016  D082                      25      ADD.L D2, D0
+00001018                            26          
+00001018  2419                      27      MOVE.L (A1)+, D2
+0000101A  D082                      28      ADD.L D2, D0
+0000101C                            29      
+0000101C  FFFF FFFF                 30      SIMHALT             ; halt simulator
+00001020                            31  
+00001020                            32  * Put variables and constants here
+00001020                            33  
+00001020= 00000005 0000000A ...     34  ACHIEVEMENT_POINTS: DC.L 5,10,15,20,30
+00001034                            35  
+00001034                            36      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ACHIEVEMENT_POINTS  1020
+START               1000

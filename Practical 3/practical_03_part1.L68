@@ -1,0 +1,32 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 27/01/2025 15:55:54
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 1
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :27/1/2025
+00000000                             5  * Description:Practical 3 part 1
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  
+00001000  43F8 4000                 12      LEA $4000, A1       ; Load the hex memory address 4000 into register A1
+00001004  12BC 0064                 13      MOVE.B #100, (A1)   ; Move the byte literal 100 into the memory address stored in A1
+00001008                            14  
+00001008  FFFF FFFF                 15      SIMHALT             ; halt simulator
+0000100C                            16  
+0000100C                            17  * Put variables and constants here
+0000100C                            18  
+0000100C                            19      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+START               1000
