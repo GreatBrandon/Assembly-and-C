@@ -1,0 +1,68 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 29/01/2025 15:37:14
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 2
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :29/1/2025
+00000000                             5  * Description:Practical 4 part 2
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  
+00001000                            12      ; Move health to memory location $3000
+00001000  11FC 0064 3000            13      MOVE.B #100, $3000
+00001006                            14      
+00001006                            15      ; Move location of player to data register D2
+00001006                            16      ; X = 1st byte 0-15
+00001006                            17      ; Y = 2nd byte 0-15
+00001006  143C 0012                 18      MOVE.B #$12, D2
+0000100A                            19      
+0000100A                            20      ; Move location of NPC to data register D3
+0000100A                            21      ; X = 1st byte 0-15
+0000100A                            22      ; Y = 2nd byte 0-15
+0000100A  163C 0022                 23      MOVE.B #$22, D3
+0000100E                            24      
+0000100E                            25      ; Bitwise AND D2 and D3
+0000100E                            26      ; Whats new location of player
+0000100E                            27      
+0000100E                            28      ; 00010010 (D2)
+0000100E                            29      ; 00100010 (D3)
+0000100E                            30      ; -------------------
+0000100E                            31      ; 00000010 (result stored in D3)
+0000100E  C602                      32      AND.B D2, D3
+00001010                            33      
+00001010                            34      ; Load memory address $3000 into address register A1
+00001010  43F8 3000                 35      LEA $3000, A1
+00001014                            36      
+00001014                            37      ; Hit by NPC
+00001014  0411 0014                 38      SUB.B #20, (A1)
+00001018                            39      
+00001018                            40      ; Pickup health found
+00001018  0611 000A                 41      ADD.B #10, (A1)
+0000101C                            42      
+0000101C                            43      ; Examples of OR, NOT and EOR below
+0000101C  163C 0022                 44      MOVE.B #$22, D3 ; reset D3 back to #$22    
+00001020  8602                      45      OR.B D2, D3     ; Performs a bitwise OR operation on D2, D3 and stores result in D3
+00001022  163C 0022                 46      MOVE.B #$22, D3 ; reset D3 back to #$22
+00001026  4603                      47      NOT.B D3    ; performs a bitwise NOT operation on D3 and stores result in D3
+00001028  163C 0022                 48      MOVE.B #$22, D3 ; reset D3 back to #$22
+0000102C  B503                      49      EOR.B D2, D3    ; performs a bitwise XOR operation on D2, D3 and stores result in D3
+0000102E                            50      
+0000102E  FFFF FFFF                 51      SIMHALT             ; halt simulator
+00001032                            52  
+00001032                            53  * Put variables and constants here
+00001032                            54  
+00001032                            55      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+START               1000

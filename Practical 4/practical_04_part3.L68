@@ -1,0 +1,63 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 29/01/2025 15:58:55
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 3
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :29/1/2025
+00000000                             5  * Description:Practical 4 part 3
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  
+00001000                            12      ; Move health to memory location $3000
+00001000  11FC 0064 3000            13      MOVE.B #100, $3000
+00001006                            14      
+00001006                            15      ; Load memory address $3000 into address register A1
+00001006  43F8 3000                 16      LEA $3000, A1
+0000100A                            17      
+0000100A                            18      ; Branch to TAKING_DAMAGE
+0000100A  6100 000A                 19      BSR TAKING_DAMAGE   ; Branch to the TAKING_DAMAGE subroutine
+0000100E                            20  
+0000100E                            21  BACK_IN_THE_GAME:
+0000100E                            22      ; lets help this player out
+0000100E                            23      ; BSR saves the return address onto the stack so it can be accessed later
+0000100E                            24      ; BRA doesn't do that and subroutines can't return
+0000100E  6100 000C                 25      BSR HEALTH_PICKUP   ; Branch to the HEALTH_PICKUP subroutine
+00001012  6000 000E                 26      BRA GAME_END        ; Branch always to the GAME_END subroutine
+00001016                            27  TAKING_DAMAGE:
+00001016                            28      ; Hit by NPC
+00001016  0411 0014                 29      SUB.B #20, (A1)     
+0000101A  60F2                      30      BRA BACK_IN_THE_GAME ;Branch always to the BACK_IN_THE_GAME subroutine
+0000101C                            31      
+0000101C                            32  HEALTH_PICKUP:
+0000101C                            33      ; Pickup health found
+0000101C  0611 000A                 34      ADD.B #10, (A1)
+00001020  4E75                      35      RTS                 ; Return to the address stored on the top of the stack
+00001022                            36                          ; (The address of the instruction that called BSR HEALTH_PICKUP)
+00001022                            37      
+00001022                            38  GAME_END:
+00001022                            39      ; Game over
+00001022  12BC 0000                 40      MOVE.B #$00, (A1)
+00001026                            41  
+00001026  FFFF FFFF                 42      SIMHALT             ; halt simulator
+0000102A                            43  
+0000102A                            44  * Put variables and constants here
+0000102A                            45  
+0000102A                            46      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BACK_IN_THE_GAME    100E
+GAME_END            1022
+HEALTH_PICKUP       101C
+START               1000
+TAKING_DAMAGE       1016
