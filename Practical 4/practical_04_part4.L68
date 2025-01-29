@@ -1,0 +1,124 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 29/01/2025 20:39:07
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 4
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :29/1/2025
+00000000                             5  * Description:Practical 4 part 4
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11      
+00001000                            12      ; load addresses of variables into address registers
+00001000  43F9 000010BC             13      LEA HEALTH, A1
+00001006  45F9 000010BD             14      LEA POSITION, A2
+0000100C  47F9 000010BE             15      LEA BOSSHEALTH, A3
+00001012  49F9 000010C0             16      LEA BOSSPOSITION, A4
+00001018  4BF9 000010C2             17      LEA POINTS, A5
+0000101E                            18      ; run the code subroutines
+0000101E  6100 003E                 19      BSR START_NEW_GAME
+00001022  6100 0080                 20      BSR MOVE_PLAYER
+00001026  6100 0086                 21      BSR MOVE_BOSS
+0000102A  6100 0062                 22      BSR HIT_BOSS
+0000102E  6100 0044                 23      BSR TAKE_DAMAGE
+00001032  6100 005A                 24      BSR HIT_BOSS
+00001036  6100 003C                 25      BSR TAKE_DAMAGE
+0000103A  6100 0052                 26      BSR HIT_BOSS
+0000103E  6100 0034                 27      BSR TAKE_DAMAGE
+00001042  6100 0030                 28      BSR TAKE_DAMAGE
+00001046  6100 0032                 29      BSR PICKUP_HEALTH
+0000104A  6100 0042                 30      BSR HIT_BOSS
+0000104E  6100 0024                 31      BSR TAKE_DAMAGE
+00001052  6100 0020                 32      BSR TAKE_DAMAGE
+00001056  6100 0036                 33      BSR HIT_BOSS
+0000105A  6000 005C                 34      BRA END ; exit the program by calling this, it will never return and therefore won't loop infinitely
+0000105E                            35      
+0000105E                            36  START_NEW_GAME:
+0000105E                            37                          ; initialises all values to default for new game
+0000105E  12BC 0064                 38      MOVE.B #100, (A1)
+00001062  14BC 0011                 39      MOVE.B #$11, (A2)
+00001066  36BC 03E8                 40      MOVE.W #1000, (A3)
+0000106A  18BC 0055                 41      MOVE.B #$55, (A4)
+0000106E  3ABC 0000                 42      MOVE.W #0, (A5)
+00001072  4E75                      43      RTS                 ; exit the branch and return to next instruction
+00001074                            44      
+00001074                            45  TAKE_DAMAGE:
+00001074  0411 000A                 46      SUB.B #10, (A1)     ; subtract 10 damage from player
+00001078  4E75                      47      RTS                 ; return
+0000107A                            48      
+0000107A                            49  PICKUP_HEALTH:
+0000107A  0611 0032                 50      ADD.B #50, (A1)     ; add 50 health to player
+0000107E  0C11 0064                 51      CMP.B #100, (A1)    ; compare does the player have more than 100 health or not
+00001082  6200 0004                 52      BHI SET_MAX_HEALTH  ; if player has more than 100 health, branch to this subroutine
+00001086  4E75                      53      RTS                 ; return
+00001088                            54  
+00001088                            55  SET_MAX_HEALTH:
+00001088  12BC 0064                 56      MOVE.B #100, (A1)   ; sets the max health to 100 if above 100
+0000108C  4E75                      57      RTS                 ; return
+0000108E                            58      
+0000108E                            59  HIT_BOSS:
+0000108E  0453 00C8                 60      SUB.W #200, (A3)    ; subtract 200 from boss health (stored in address in A3)
+00001092  0C53 0000                 61      CMP.W #0, (A3)      ; compares if boss health (memory location stored in A3) <= 0 
+00001096  6300 0004                 62      BLS VICTORY         ; if boss health <= 0 run this subroutine
+0000109A  4E75                      63      RTS                 ; return
+0000109C                            64      
+0000109C                            65  VICTORY:
+0000109C  0655 03E8                 66      ADD.W #1000, (A5)   ; add 1000 to points
+000010A0  3615                      67      MOVE.W (A5), D3     ; show points in D3
+000010A2  4E75                      68      RTS                 ; return
+000010A4                            69      
+000010A4                            70  MOVE_PLAYER:
+000010A4  1212                      71      MOVE.B (A2), D1     ; move player pos to D1
+000010A6  1414                      72      MOVE.B (A4), D2     ; move boss pos to D2
+000010A8  B501                      73      EOR.B D2, D1        ; do a xor operation and store result as new player position in D1
+000010AA  1481                      74      MOVE.B D1, (A2)     ; save new player pos to memory
+000010AC  4E75                      75      RTS                 ; return
+000010AE                            76      
+000010AE                            77  MOVE_BOSS:
+000010AE  1212                      78      MOVE.B (A2), D1     ; move player pos to D1
+000010B0  1414                      79      MOVE.B (A4), D2     ; move boss pos to D2
+000010B2  C401                      80      AND.B D1, D2        ; do a and operation and store the result as new boss position in D2
+000010B4  1882                      81      MOVE.B D2, (A4)     ; save new boss pos to memory
+000010B6  4E75                      82      RTS                 ; return
+000010B8                            83      
+000010B8                            84  END:
+000010B8  FFFF FFFF                 85      SIMHALT             ; halt simulator
+000010BC                            86  
+000010BC                            87  * Put variables and constants here
+000010BC                            88  
+000010BC= 64                        89  HEALTH dc.b 100
+000010BD= 11                        90  POSITION dc.b $11
+000010BE                            91  
+000010BE= 03E8                      92  BOSSHEALTH dc.w 1000
+000010C0= 55                        93  BOSSPOSITION dc.b $55
+000010C1                            94  
+000010C2= 0000                      95  POINTS dc.w 0
+000010C4                            96  
+000010C4                            97      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BOSSHEALTH          10BE
+BOSSPOSITION        10C0
+END                 10B8
+HEALTH              10BC
+HIT_BOSS            108E
+MOVE_BOSS           10AE
+MOVE_PLAYER         10A4
+PICKUP_HEALTH       107A
+POINTS              10C2
+POSITION            10BD
+SET_MAX_HEALTH      1088
+START               1000
+START_NEW_GAME      105E
+TAKE_DAMAGE         1074
+VICTORY             109C
