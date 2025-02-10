@@ -1,0 +1,173 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 10/02/2025 16:35:40
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      : Part 5
+00000000                             3  * Written by : Brandon Jaroszczak C00296052
+00000000                             4  * Date       : 10/2/2025
+00000000                             5  * Description: Practical 5 part 5
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG $1000
+00001000                             8  ; D0 Used for Trap Codes, An Counting ENEMIES
+00001000                             9  ; D1 Used for Players Health
+00001000                            10  ; D2 Used for Enemy Positions
+00001000                            11  ; D4 used for ENEMY count
+00001000                            12  ; A0 for counting enemies
+00001000                            13  ; A1 for progress messages
+00001000                            14  ; A2 used for PLAYER_X
+00001000                            15  ; A3 used for ENEMY_POSITIONS
+00001000  =0000000A                 16  DAMAGE EQU 10   ; Damage when collisions occur
+00001000                            17  START:
+00001000  47F9 00001140             18      LEA ENEMY_POSITIONS, A3 ; Enemy positions or spawn points
+00001006  6000 0002                 19      BRA GAME_LOOP
+0000100A                            20  GAME_LOOP:
+0000100A  6100 00A2                 21      BSR COUNT_ENEMIES   ; Size of the ENEMY_POSITIONS Array
+0000100E  1800                      22      MOVE.B D0, D4       ; Reset Enemy count at begining of loop
+00001010                            23      
+00001010  6100 00B2                 24      BSR CHECK_POWERUPS  ; Branch to check powerups
+00001014                            25  
+00001014  43F9 000010FE             26      LEA MSG_GAMELOOP, A1 ; Load and Draw Gameloop Message
+0000101A  6100 003C                 27      BSR DRAW
+0000101E                            28      
+0000101E  6100 0004                 29      BSR UPDATE      ; Call UPDATE
+00001022  60E6                      30      BRA GAME_LOOP   ; Call GAME_LOOP
+00001024                            31      
+00001024                            32  UPDATE:
+00001024  1239 000010F4             33      MOVE.B PLAYER_HEALTH, D1 ; Move Player Health into D1
+0000102A                            34      
+0000102A  43F9 000010F5             35      LEA MSG_HEALTH, A1 ; Load and Draw Health Message
+00001030  6100 0026                 36      BSR DRAW
+00001034                            37      
+00001034  103C 0003                 38      MOVE.B #3, D0   ; Display signed number in D1.L in decimal in smallest field
+00001038  4E4F                      39      TRAP #15
+0000103A                            40      
+0000103A  43F9 0000113C             41      LEA CRLF, A1    ; Load carriage return and line feed
+00001040  6100 0016                 42      BSR DRAW
+00001044                            43      
+00001044  B27C 0000                 44      CMP #0, D1      ; Check if health is 0
+00001048  6F00 0058                 45      BLE GAME_OVER   ; Game over
+0000104C  52B9 000010F0             46      ADD.L #1, PLAYER_X  ; Change x position of player
+00001052  6100 000C                 47      BSR COLLISION   ; Check for collisions with enemies
+00001056  4E75                      48      RTS
+00001058                            49      
+00001058                            50  DRAW: 
+00001058  103C 000D                 51      MOVE.B #13, D0
+0000105C  4E4F                      52      TRAP #15
+0000105E  4E75                      53      RTS
+00001060                            54      
+00001060                            55  COLLISION:
+00001060  1A3C 0001                 56      MOVE.B #1, D5   ; Loop through array
+00001064  47F9 00001140             57      LEA ENEMY_POSITIONS, A3 ; Load ENEMY_POSITIONS array
+0000106A                            58      
+0000106A                            59  ITERATE:
+0000106A  B845                      60      CMP D5, D4      ; Counter for ENEMY_POSITIONS
+0000106C  5205                      61      ADD.B #1, D5    ; Subtract 1
+0000106E  679A                      62      BEQ GAME_LOOP   ; If 0 go to GAME_LOOP
+00001070  6600 0004                 63      BNE CHECK_ENEMIES   ; If not check for enemy collisions
+00001074  4E75                      64      RTS
+00001076                            65      
+00001076                            66  CHECK_ENEMIES:
+00001076  241B                      67      MOVE.L (A3)+, D2    ; Move enemies positions to D2
+00001078  2639 000010F0             68      MOVE.L PLAYER_X, D3     ; Move player position to D3
+0000107E                            69      
+0000107E  B682                      70      CMP.L D2, D3        ; Compare player and enemy position
+00001080  6700 0004                 71      BEQ REDUCE_HEALTH   ; If equal reduce health
+00001084  66E4                      72      BNE ITERATE         ; Iterate to next enemy
+00001086                            73      
+00001086                            74  REDUCE_HEALTH:
+00001086  43F9 00001108             75      LEA MSG_COLLISION, A1   ; Load and draw collision message
+0000108C  61CA                      76      BSR DRAW
+0000108E                            77      
+0000108E  0439 000A 000010F4        78      SUB.B #DAMAGE, PLAYER_HEALTH
+00001096                            79      
+00001096  43F9 0000111C             80      LEA MSG_DAMAGE, A1      ; Load and draw damage message
+0000109C  61BA                      81      BSR DRAW
+0000109E                            82      
+0000109E  6000 FF6A                 83      BRA GAME_LOOP
+000010A2                            84      
+000010A2                            85  GAME_OVER:
+000010A2  43F9 00001112             86      LEA MSG_GAMEOVER, A1
+000010A8  61AE                      87      BSR DRAW
+000010AA  FFFF FFFF                 88      SIMHALT
+000010AE                            89      
+000010AE                            90  COUNT_ENEMIES:
+000010AE  103C 0000                 91      MOVE.B #0, D0   ; Initialise counter to 0
+000010B2  41F9 00001140             92      LEA ENEMY_POSITIONS, A0 ; Load the address of the array into A0
+000010B8                            93      
+000010B8                            94  COUNT_ENEMIES_LOOP:
+000010B8  4A98                      95      TST.L (A0)+     ; Test the byte at the address in A0 (check if 0) and increment A0
+000010BA  6700 0006                 96      BEQ END_COUNTING ; If the byte is 0, it's the end of the array
+000010BE                            97      
+000010BE  5200                      98      ADD.B #1, D0    ; Increment the counter
+000010C0  60F6                      99      BRA COUNT_ENEMIES_LOOP ; Repeat the loop
+000010C2                           100      
+000010C2                           101  END_COUNTING: 
+000010C2  4E75                     102      RTS
+000010C4                           103      
+000010C4                           104  CHECK_POWERUPS: 
+000010C4  4BF9 00001170            105      LEA POWER_UPS, A5 ; Initialise loop for check powerups positions
+000010CA                           106      
+000010CA                           107  CHECK_NEXT:
+000010CA  4A9D                     108      TST.L (A5)+         ; Check has the end of the array been reached (0 value)
+000010CC  67F4                     109      BEQ END_COUNTING    ; End counting if end of array reached
+000010CE  2C39 000010F0            110      MOVE.L PLAYER_X, D6 ;
+000010D4  BC55                     111      CMP (A5), D6  ; Check is player x and powerup position equal
+000010D6  6700 0004                112      BEQ ADD_HEALTH      ; If equal add health
+000010DA  60EE                     113      BRA CHECK_NEXT      ; Branch always to next 
+000010DC                           114      
+000010DC                           115  ADD_HEALTH:
+000010DC  0639 0019 000010F4       116      ADD.B #25, PLAYER_HEALTH
+000010E4  43F9 0000112A            117      LEA MSG_POWERUP, A1
+000010EA  700D                     118      MOVE.L #13, D0
+000010EC  4E4F                     119      TRAP #15
+000010EE  4E75                     120      RTS
+000010F0                           121      
+000010F0= 00000001                 122  PLAYER_X DC.L 1
+000010F4= 64                       123  PLAYER_HEALTH DC.B 100
+000010F5= 48 65 61 6C 74 68 ...    124  MSG_HEALTH DC.B 'Health: ', 0
+000010FE= 47 61 6D 65 20 6C ...    125  MSG_GAMELOOP DC.B 'Game loop', 0
+00001108= 43 6F 6C 6C 69 73 ...    126  MSG_COLLISION DC.B 'Collision', 0
+00001112= 47 61 6D 65 20 6F ...    127  MSG_GAMEOVER DC.B 'Game over', 0
+0000111C= 54 61 6B 69 6E 67 ...    128  MSG_DAMAGE DC.B 'Taking damage', 0
+0000112A= 50 6F 77 65 72 75 ...    129  MSG_POWERUP DC.B 'Powerup collected', 0
+0000113C= 0D 0A 00                 130  CRLF DC.B $0D, $0A, 0
+00001140= 00000014 0000001E ...    131  ENEMY_POSITIONS DC.L 20,30,40,50,60,70,80,90,200,300,500,0 ; Terminate array with a 0
+00001170= 0000000A 00000037 ...    132  POWER_UPS DC.L 10,55,220,0 ; Terminate array with a 0
+00001180                           133  
+00001180                           134      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ADD_HEALTH          10DC
+CHECK_ENEMIES       1076
+CHECK_NEXT          10CA
+CHECK_POWERUPS      10C4
+COLLISION           1060
+COUNT_ENEMIES       10AE
+COUNT_ENEMIES_LOOP  10B8
+CRLF                113C
+DAMAGE              A
+DRAW                1058
+END_COUNTING        10C2
+ENEMY_POSITIONS     1140
+GAME_LOOP           100A
+GAME_OVER           10A2
+ITERATE             106A
+MSG_COLLISION       1108
+MSG_DAMAGE          111C
+MSG_GAMELOOP        10FE
+MSG_GAMEOVER        1112
+MSG_HEALTH          10F5
+MSG_POWERUP         112A
+PLAYER_HEALTH       10F4
+PLAYER_X            10F0
+POWER_UPS           1170
+REDUCE_HEALTH       1086
+START               1000
+UPDATE              1024

@@ -1,0 +1,61 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 10/02/2025 15:35:12
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 2
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :10/2/2025
+00000000                             5  * Description:Practical 5 part 2
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  
+00001000  43F9 00001030             12      LEA PLAYER_POSITION, A1 ; Load variable addresses into address registers
+00001006  45F9 00001032             13      LEA ENEMY_POSITION, A2
+0000100C                            14      
+0000100C  1219                      15      MOVE.B (A1)+, D1 ; Load player x and y into D1 and D2
+0000100E  1411                      16      MOVE.B (A1), D2
+00001010  161A                      17      MOVE.B (A2)+, D3 ; Load enemy x and y into D3 and D4
+00001012  1812                      18      MOVE.B (A2), D4
+00001014                            19      
+00001014                            20  COLLISION_CHECK:
+00001014  B243                      21      CMP D3, D1      ; Compare D3 and D1 (player and emeny x)
+00001016  6D00 0006                 22      BLT NEXT_MOVE   ; Branch if less than
+0000101A  6700 0008                 23      BEQ COLLISION   ; Branch if equal (i.e player x = enemy x)
+0000101E                            24      
+0000101E                            25  NEXT_MOVE:
+0000101E  5201                      26      ADD.B #1, D1    ; Add 1 to player x and y positions
+00001020  5202                      27      ADD.B #1, D2    ;
+00001022  60F0                      28      BRA COLLISION_CHECK ; Branch always
+00001024                            29      
+00001024                            30  COLLISION:
+00001024  B444                      31      CMP D4, D2      ; Compare D4 and D2 (player and emeny y)
+00001026  6DF6                      32      BLT NEXT_MOVE   ; Branch if less than (player and emeny y not equal no collision)
+00001028  6000 0002                 33      BRA GAME_OVER   ; Branch always (i.e. player x,y is identical to enemy x,y)
+0000102C                            34      
+0000102C                            35  GAME_OVER:
+0000102C  FFFF FFFF                 36      SIMHALT             ; halt simulator
+00001030                            37  
+00001030                            38  * Put variables and constants here
+00001030= 0A 0F                     39  PLAYER_POSITION: DC.B 10, 15
+00001032= 32 37                     40  ENEMY_POSITION: DC.B 50, 55
+00001034                            41  
+00001034                            42      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+COLLISION           1024
+COLLISION_CHECK     1014
+ENEMY_POSITION      1032
+GAME_OVER           102C
+NEXT_MOVE           101E
+PLAYER_POSITION     1030
+START               1000

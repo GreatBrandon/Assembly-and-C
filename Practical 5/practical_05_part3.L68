@@ -1,0 +1,76 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 10/02/2025 15:46:39
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      : Part 3
+00000000                             3  * Written by : Brandon Jaroszczak C00296052
+00000000                             4  * Date       : 10/2/2025
+00000000                             5  * Description: Pracitcal 5 part 3
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8      
+00001000  =00000064                  9  DAMAGE EQU 100
+00001000                            10  START:                  ; first instruction of program
+00001000                            11  
+00001000                            12  * Put program code here
+00001000                            13  GAME_LOOP:
+00001000  43F9 00001055             14      LEA MSG_GAME_LOOP, A1   ; Load address of variable into A1
+00001006  103C 000D                 15      MOVE.B #13, D0  ; Move 13 into D0
+0000100A  4E4F                      16      TRAP #15        ; Execute trap 13 (display String in (A1))
+0000100C  0C39 0000 00001054        17      CMP.B #0, PLAYER_HEALTH ; Compare D0 and value of player health
+00001014  6700 002C                 18      BEQ GAME_OVER   ; Branch if equal
+00001018  6100 0008                 19      BSR UPDATE      ; Branch to subroutine
+0000101C  6100 000C                 20      BSR COLLISION_CHECK ; Branch to subroutine
+00001020  60DE                      21      BRA GAME_LOOP   ; Branch always
+00001022                            22      
+00001022                            23  UPDATE:
+00001022  5239 00001052             24      ADD.B #1, PLAYER_POSITION ; Add 1 to player positions
+00001028  4E75                      25      RTS ; Return
+0000102A                            26  
+0000102A                            27  COLLISION_CHECK:
+0000102A  1239 00001052             28      MOVE.B PLAYER_POSITION, D1 ; Move player position into D1
+00001030  B202                      29      CMP.B D2, D1    ; Compare D2 and D1
+00001032  6700 0004                 30      BEQ COLLISION   ; Branch if equal
+00001036  4E75                      31      RTS             ; Return
+00001038                            32      
+00001038                            33  COLLISION:
+00001038  0439 0064 00001054        34      SUB.B #DAMAGE, PLAYER_HEALTH    ; Subtract damage from player health
+00001040  60BE                      35      BRA GAME_LOOP   ; Branch always
+00001042                            36      
+00001042                            37  GAME_OVER:
+00001042  43F9 00001064             38      LEA MSG_GAME_OVER, A1   ; Load address of game over message into A1
+00001048  103C 000D                 39      MOVE.B #13, D0          ; Move 13 into D0
+0000104C  4E4F                      40      TRAP #15                ; Trap 13 (display String at (A1))
+0000104E  FFFF FFFF                 41      SIMHALT             ; halt simulator
+00001052                            42  
+00001052                            43  * Put variables and constants here
+00001052                            44  
+00001052= 0A                        45  PLAYER_POSITION: DC.B 10
+00001053= 32                        46  ENEMY_POSITION: DC.B 50
+00001054= 64                        47  PLAYER_HEALTH: DC.B 100
+00001055                            48  
+00001055= 47 61 6D 65 20 4C ...     49  MSG_GAME_LOOP DC.B 'Game Loop.....', 0
+00001064= 47 61 6D 65 20 6F ...     50  MSG_GAME_OVER DC.B 'Game over!', 0
+0000106F                            51  
+0000106F                            52      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+COLLISION           1038
+COLLISION_CHECK     102A
+DAMAGE              64
+ENEMY_POSITION      1053
+GAME_LOOP           1000
+GAME_OVER           1042
+MSG_GAME_LOOP       1055
+MSG_GAME_OVER       1064
+PLAYER_HEALTH       1054
+PLAYER_POSITION     1052
+START               1000
+UPDATE              1022
