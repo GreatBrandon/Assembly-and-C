@@ -98,26 +98,25 @@ COUNT_ENEMIES_LOOP:
     ADD.B #1, D0    ; Increment the counter
     BRA COUNT_ENEMIES_LOOP ; Repeat the loop
     
-END_COUNTING: 
+END_COUNTING:
     RTS
     
 CHECK_POWERUPS: 
-    LEA POWER_UPS, A5 ; Initialise loop for check powerups positions
+    LEA POWER_UPS, A5
     
 CHECK_NEXT:
-    TST.L (A5)+         ; Check has the end of the array been reached (0 value)
-    BEQ END_COUNTING    ; End counting if end of array reached
-    MOVE.L PLAYER_X, D6 ;
-    CMP (A5), D6  ; Check is player x and powerup position equal
-    BEQ ADD_HEALTH      ; If equal add health
-    BRA CHECK_NEXT      ; Branch always to next 
-    
+    TST.L (A5)
+    BEQ END_COUNTING
+    MOVE.L PLAYER_X, D6
+    CMP.L (A5)+, D6
+    BGT END_COUNTING
+    BLT CHECK_NEXT
+    BEQ ADD_HEALTH
+ 
 ADD_HEALTH:
-    ADD.B #25, PLAYER_HEALTH
+    ADD.B #20, PLAYER_HEALTH
     LEA MSG_POWERUP, A1
-    MOVE.L #13, D0
-    TRAP #15
-    RTS
+    BRA DRAW
     
 PLAYER_X DC.L 1
 PLAYER_HEALTH DC.B 100
@@ -132,6 +131,7 @@ ENEMY_POSITIONS DC.L 20,30,40,50,60,70,80,90,200,300,500,0 ; Terminate array wit
 POWER_UPS DC.L 10,55,220,0 ; Terminate array with a 0
 
     END START
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~1~

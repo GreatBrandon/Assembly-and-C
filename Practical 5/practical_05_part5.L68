@@ -1,6 +1,6 @@
 00001000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.16.01
-Created On: 10/02/2025 16:35:40
+Created On: 12/02/2025 15:47:16
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      : Part 5
@@ -102,40 +102,39 @@ Created On: 10/02/2025 16:35:40
 000010BE  5200                      98      ADD.B #1, D0    ; Increment the counter
 000010C0  60F6                      99      BRA COUNT_ENEMIES_LOOP ; Repeat the loop
 000010C2                           100      
-000010C2                           101  END_COUNTING: 
+000010C2                           101  END_COUNTING:
 000010C2  4E75                     102      RTS
 000010C4                           103      
 000010C4                           104  CHECK_POWERUPS: 
-000010C4  4BF9 00001170            105      LEA POWER_UPS, A5 ; Initialise loop for check powerups positions
+000010C4  4BF9 00001170            105      LEA POWER_UPS, A5
 000010CA                           106      
 000010CA                           107  CHECK_NEXT:
-000010CA  4A9D                     108      TST.L (A5)+         ; Check has the end of the array been reached (0 value)
-000010CC  67F4                     109      BEQ END_COUNTING    ; End counting if end of array reached
-000010CE  2C39 000010F0            110      MOVE.L PLAYER_X, D6 ;
-000010D4  BC55                     111      CMP (A5), D6  ; Check is player x and powerup position equal
-000010D6  6700 0004                112      BEQ ADD_HEALTH      ; If equal add health
-000010DA  60EE                     113      BRA CHECK_NEXT      ; Branch always to next 
-000010DC                           114      
-000010DC                           115  ADD_HEALTH:
-000010DC  0639 0019 000010F4       116      ADD.B #25, PLAYER_HEALTH
-000010E4  43F9 0000112A            117      LEA MSG_POWERUP, A1
-000010EA  700D                     118      MOVE.L #13, D0
-000010EC  4E4F                     119      TRAP #15
-000010EE  4E75                     120      RTS
-000010F0                           121      
-000010F0= 00000001                 122  PLAYER_X DC.L 1
-000010F4= 64                       123  PLAYER_HEALTH DC.B 100
-000010F5= 48 65 61 6C 74 68 ...    124  MSG_HEALTH DC.B 'Health: ', 0
-000010FE= 47 61 6D 65 20 6C ...    125  MSG_GAMELOOP DC.B 'Game loop', 0
-00001108= 43 6F 6C 6C 69 73 ...    126  MSG_COLLISION DC.B 'Collision', 0
-00001112= 47 61 6D 65 20 6F ...    127  MSG_GAMEOVER DC.B 'Game over', 0
-0000111C= 54 61 6B 69 6E 67 ...    128  MSG_DAMAGE DC.B 'Taking damage', 0
-0000112A= 50 6F 77 65 72 75 ...    129  MSG_POWERUP DC.B 'Powerup collected', 0
-0000113C= 0D 0A 00                 130  CRLF DC.B $0D, $0A, 0
-00001140= 00000014 0000001E ...    131  ENEMY_POSITIONS DC.L 20,30,40,50,60,70,80,90,200,300,500,0 ; Terminate array with a 0
-00001170= 0000000A 00000037 ...    132  POWER_UPS DC.L 10,55,220,0 ; Terminate array with a 0
-00001180                           133  
-00001180                           134      END START
+000010CA  4A95                     108      TST.L (A5)
+000010CC  67F4                     109      BEQ END_COUNTING
+000010CE  2C39 000010F0            110      MOVE.L PLAYER_X, D6
+000010D4  BC9D                     111      CMP.L (A5)+, D6
+000010D6  6EEA                     112      BGT END_COUNTING
+000010D8  6DF0                     113      BLT CHECK_NEXT
+000010DA  6700 0002                114      BEQ ADD_HEALTH
+000010DE                           115   
+000010DE                           116  ADD_HEALTH:
+000010DE  0639 0014 000010F4       117      ADD.B #20, PLAYER_HEALTH
+000010E6  43F9 0000112A            118      LEA MSG_POWERUP, A1
+000010EC  6000 FF6A                119      BRA DRAW
+000010F0                           120      
+000010F0= 00000001                 121  PLAYER_X DC.L 1
+000010F4= 64                       122  PLAYER_HEALTH DC.B 100
+000010F5= 48 65 61 6C 74 68 ...    123  MSG_HEALTH DC.B 'Health: ', 0
+000010FE= 47 61 6D 65 20 6C ...    124  MSG_GAMELOOP DC.B 'Game loop', 0
+00001108= 43 6F 6C 6C 69 73 ...    125  MSG_COLLISION DC.B 'Collision', 0
+00001112= 47 61 6D 65 20 6F ...    126  MSG_GAMEOVER DC.B 'Game over', 0
+0000111C= 54 61 6B 69 6E 67 ...    127  MSG_DAMAGE DC.B 'Taking damage', 0
+0000112A= 50 6F 77 65 72 75 ...    128  MSG_POWERUP DC.B 'Powerup collected', 0
+0000113C= 0D 0A 00                 129  CRLF DC.B $0D, $0A, 0
+00001140= 00000014 0000001E ...    130  ENEMY_POSITIONS DC.L 20,30,40,50,60,70,80,90,200,300,500,0 ; Terminate array with a 0
+00001170= 0000000A 00000037 ...    131  POWER_UPS DC.L 10,55,220,0 ; Terminate array with a 0
+00001180                           132  
+00001180                           133      END START
 
 No errors detected
 No warnings generated
@@ -144,7 +143,7 @@ No warnings generated
 SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
-ADD_HEALTH          10DC
+ADD_HEALTH          10DE
 CHECK_ENEMIES       1076
 CHECK_NEXT          10CA
 CHECK_POWERUPS      10C4
