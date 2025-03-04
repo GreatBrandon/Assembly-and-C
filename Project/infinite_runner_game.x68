@@ -1429,7 +1429,7 @@ SKY_MARS        EQU     $008AD3FF
 ENEMY_COLOUR    DS.L    1
 GROUND_COLOUR   DS.L    1
 SKY_COLOUR      DS.L    1
-POWERUP_COLOUR  DC.L    $00AAAAAA
+POWERUP_COLOUR  DC.L    $000E6900
 *-----------------------------------------------------------
 * Section       : Screen Size
 * Description   : Screen Width and Height (640*480)
@@ -1478,16 +1478,6 @@ JUMP_WAV        DC.B    'jump.wav',0        ; Jump Sound
 RUN_WAV         DC.B    'run.wav',0         ; Run Sound
 OPPS_WAV        DC.B    'opps.wav',0        ; Collision Opps
     END    START        ; last line of source
-
-
-
-
-
-
-
-
-
-
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~1~
