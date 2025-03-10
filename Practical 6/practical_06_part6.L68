@@ -1,0 +1,69 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 10/03/2025 15:36:44
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      : Part 6
+00000000                             3  * Written by : Brandon Jaroszczak C00296052
+00000000                             4  * Date       : 10/3/2025
+00000000                             5  * Description: Practical 6 part 6
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  
+00001000  2F3C 0000104E             12      MOVE.L #HEALTH, -(SP) ; Note position in stack
+00001006                            13      
+00001006  103C 000E                 14      MOVE.B #14, D0
+0000100A  123C 000E                 15      MOVE.B #14, D1
+0000100E                            16      
+0000100E  2F00                      17      MOVE.L D0, -(SP) ; player x
+00001010  2F01                      18      MOVE.L D1, -(SP) ; enemy x
+00001012                            19      
+00001012  4EB9 00001020             20      JSR GAME_LOOP
+00001018  6100 0022                 21      BSR HEADS_UP_DISPLAY
+0000101C  6000 002C                 22      BRA END_GAME
+00001020                            23      
+00001020                            24  GAME_LOOP:
+00001020                            25      
+00001020  222F 0004                 26      MOVE.L 4(SP), D1 ; Note depth in stack
+00001024  202F 0008                 27      MOVE.L 8(SP), D0 ; Note depth in stack
+00001028                            28      
+00001028  B240                      29      CMP D0, D1
+0000102A  6700 0006                 30      BEQ DAMAGE
+0000102E  6000 000A                 31      BRA NO_DAMAGE
+00001032                            32      
+00001032                            33  DAMAGE:
+00001032  226F 000C                 34      MOVEA.L 12(SP), A1 ; Note depth in stack
+00001036  0411 000A                 35      SUB.B #10, (A1)
+0000103A                            36  NO_DAMAGE:
+0000103A  4E75                      37      RTS
+0000103C                            38      
+0000103C                            39  HEADS_UP_DISPLAY:
+0000103C  1239 0000104E             40      MOVE.B HEALTH, D1
+00001042  103C 0003                 41      MOVE.B #3, D0
+00001046  4E4F                      42      TRAP #15
+00001048  4E75                      43      RTS
+0000104A                            44      
+0000104A                            45  END_GAME:
+0000104A  FFFF FFFF                 46      SIMHALT             ; halt simulator
+0000104E                            47  
+0000104E                            48  * Put variables and constants here
+0000104E= 64                        49  HEALTH: DC.B 100
+0000104F                            50      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DAMAGE              1032
+END_GAME            104A
+GAME_LOOP           1020
+HEADS_UP_DISPLAY    103C
+HEALTH              104E
+NO_DAMAGE           103A
+START               1000

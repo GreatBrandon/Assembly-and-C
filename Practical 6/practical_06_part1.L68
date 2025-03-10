@@ -1,0 +1,41 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 24/02/2025 15:30:30
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 1
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :24/2/2025
+00000000                             5  * Description:Practical 6 part 1
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  
+00001000                            12      ; Move trap task to D0
+00001000  103C 0002                 13      MOVE.B #2, D0
+00001004                            14      ; Interupt and trap task
+00001004  4E4F                      15      TRAP #15
+00001006                            16      
+00001006  43F9 00001016             17      LEA MESSAGE, A1
+0000100C  103C 000D                 18      MOVE.B #13, D0
+00001010  4E4F                      19      TRAP #15
+00001012                            20      
+00001012                            21  END_PROG:
+00001012  FFFF FFFF                 22      SIMHALT             ; halt simulator
+00001016                            23  
+00001016                            24  * Put variables and constants here
+00001016= 54 72 61 70 20 74 ...     25  MESSAGE: DC.B 'Trap task test', 0
+00001025                            26      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+END_PROG            1012
+MESSAGE             1016
+START               1000

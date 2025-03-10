@@ -1,0 +1,106 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 26/02/2025 15:32:58
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Part 2
+00000000                             3  * Written by :Brandon Jaroszczak C00296052
+00000000                             4  * Date       :26/2/2025
+00000000                             5  * Description:Practical 6 part 2
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000  43F9 0000109C             11      LEA MESSAGE, A1
+00001006  323C 000A                 12      MOVE.W #10, D1
+0000100A                            13      ; Move trap task to D0
+0000100A  103C 0000                 14      MOVE.B #0, D0 ; display String in A1 D1.W bytes long with CR LF
+0000100E  4E4F                      15      TRAP #15
+00001010                            16      
+00001010  103C 0001                 17      MOVE.B #1, D0 ; display String in A1 D1.W bytes long without CR LF
+00001014  4E4F                      18      TRAP #15
+00001016                            19      
+00001016  103C 0002                 20      MOVE.B #2, D0 ; read string from keyboard and store in A1
+0000101A  4E4F                      21      TRAP #15
+0000101C                            22      
+0000101C  223C 000003E8             23      MOVE.L #1000, D1
+00001022  103C 0003                 24      MOVE.B #3, D0 ; display number in D1
+00001026  4E4F                      25      TRAP #15
+00001028                            26      
+00001028  103C 0004                 27      MOVE.B #4, D0 ; read number from keyboard into D1.L
+0000102C  4E4F                      28      TRAP #15
+0000102E                            29      
+0000102E  103C 0005                 30      MOVE.B #5, D0 ; read character from keyboard into D1.B
+00001032  4E4F                      31      TRAP #15
+00001034                            32      
+00001034  103C 0006                 33      MOVE.B #6, D0 ; display single character in D1.B
+00001038  4E4F                      34      TRAP #15
+0000103A                            35      
+0000103A  103C 0007                 36      MOVE.B #7, D0 ; check is keyboard input pending, set D1.B to 1 if true 0 if false
+0000103E  4E4F                      37      TRAP #15
+00001040                            38      
+00001040  103C 0008                 39      MOVE.B #8, D0 ; return time in 100s of a second since midnight in D1.L
+00001044  4E4F                      40      TRAP #15
+00001046                            41      
+00001046                            42      ; task 9 skipped terminates program
+00001046                            43      
+00001046                            44      ; task 10 doesnt exist
+00001046                            45      
+00001046  103C 000B                 46      MOVE.B #11, D0 ; clear screen
+0000104A  4E4F                      47      TRAP #15
+0000104C                            48      
+0000104C  103C 000C                 49      MOVE.B #12, D0 ; keyboard echo
+00001050  4E4F                      50      TRAP #15
+00001052                            51      
+00001052  103C 000D                 52      MOVE.B #13, D0 ; display null terminated string at A1 with CR LF
+00001056  4E4F                      53      TRAP #15
+00001058                            54      
+00001058  103C 000E                 55      MOVE.B #14, D0 ; display null terminated string at A1 without CR LF
+0000105C  4E4F                      56      TRAP #15
+0000105E                            57      
+0000105E                            58      ; task 15 doesnt exist
+0000105E                            59      
+0000105E  103C 0010                 60      MOVE.B #16, D0 ; adjust display properties using D1.B
+00001062  4E4F                      61      TRAP #15
+00001064                            62      
+00001064  103C 0011                 63      MOVE.B #17, D0 ; combination of trap tasks 14 and 3
+00001068  4E4F                      64      TRAP #15
+0000106A                            65      
+0000106A  103C 0012                 66      MOVE.B #18, D0 ; combination of trap tasks 14 and 4
+0000106E  4E4F                      67      TRAP #15
+00001070                            68      
+00001070  103C 0013                 69      MOVE.B #19, D0 ; returns state of up to 4 specified keys or returns key scan code
+00001074                            70                     ; D1.L = four 1 byte key codes
+00001074  4E4F                      71      TRAP #15
+00001076                            72      
+00001076  223C 000004D2             73      MOVE.L #1234, D1
+0000107C  143C 0002                 74      MOVE.B #2, D2
+00001080  103C 0014                 75      MOVE.B #20, D0 ; display signed number in D1.L in decimal in field D2.B columns wide
+00001084  4E4F                      76      TRAP #15
+00001086                            77      
+00001086  103C 0015                 78      MOVE.B #21, D0 ; set font colour
+0000108A  4E4F                      79      TRAP #15
+0000108C                            80      
+0000108C  103C 0016                 81      MOVE.B #22, D0 ; read char at row col of text screen
+00001090  4E4F                      82      TRAP #15
+00001092                            83      
+00001092  103C 0009                 84      MOVE.B #9, D0 ; terminate program
+00001096  4E4F                      85      TRAP #15
+00001098                            86  END_PROG:
+00001098  FFFF FFFF                 87      SIMHALT             ; halt simulator
+0000109C                            88  
+0000109C                            89  * Put variables and constants here
+0000109C= 54 72 61 70 20 74 ...     90  MESSAGE: DC.B 'Trap task test', 0
+000010AB                            91      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+END_PROG            1098
+MESSAGE             109C
+START               1000
